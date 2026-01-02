@@ -2,6 +2,10 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import ContactForm from './components/ContactForm';
 import ContactList from './components/ContactList';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+
+
 
 function App() {
   const [contacts, setContacts] = useState([]);
@@ -15,7 +19,7 @@ function App() {
   const fetchContacts = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/contacts');
+      const response = await axios.get(`${API_URL}/api/contacts`);
       setContacts(response.data);
       setError('');
     } catch (error) {
@@ -32,7 +36,7 @@ function App() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/contacts/${id}`);
+      await axios.delete(`${API_URL}/api/contacts/${id}`);
       setContacts(contacts.filter(contact => contact._id !== id));
     } catch (error) {
       setError('Failed to delete contact');
