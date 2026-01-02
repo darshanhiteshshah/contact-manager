@@ -1,14 +1,24 @@
 import { useState } from 'react';
+import axios from 'axios';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 function ContactList({ contacts, onDelete, loading }) {
   const [deleteId, setDeleteId] = useState(null);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
 
-  const handleDeleteClick = (id) => {
+  const handleDeleteClick = async (id) => {
     if (window.confirm('Delete this contact?')) {
       setDeleteId(id);
-      onDelete(id);
-      setTimeout(() => setDeleteId(null), 500);
+      
+      try {
+        await axios.delete(`${API_URL}/api/contacts/${id}`);
+        onDelete(id);
+        setTimeout(() => setDeleteId(null), 500);
+      } catch (error) {
+        console.error('Error deleting contact:', error);
+        setDeleteId(null);
+      }
     }
   };
 

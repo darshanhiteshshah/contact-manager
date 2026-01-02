@@ -87,7 +87,7 @@ function ContactForm({ onContactAdded }) {
     setSuccess('');
 
     try {
-      const response = await axios.post('http://localhost:5000/api/contacts', formData);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/contacts`, formData);
       onContactAdded(response.data);
       setFormData({ name: '', email: '', phone: '', message: '' });
       setErrors({});
